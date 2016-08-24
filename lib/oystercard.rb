@@ -21,19 +21,19 @@ class Oystercard
 
   def touch_in(station)
     fail "balance less than £#{Journey::MIN_FARE} - please top up" if balance < Journey::MIN_FARE
-    @current_journey = Journey.new
-    current_journey.start(station)
+    finish_journey if current_journey
+    @current_journey = Journey.new(entry_station: station)
   end
 
   def touch_out(station)
-    @current_journey = Journey.new unless current_journey
+    @current_journey = Journey.new(exit_station: station) unless current_journey
     current_journey.finish(station)
-    finish_touch_out
+    finish_journey
   end
 
   private
 
-  def finish_touch_out
+  def finish_journey
     @journeys << current_journey
     deduct(current_journey.fare)
     @current_journey = nil

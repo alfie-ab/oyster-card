@@ -58,6 +58,7 @@ describe Oystercard do
 
       before(:each) do
         subject.top_up(10)
+        allow(current_journey).to receive(:fare) { 6 }
         subject.touch_in(entry_station)
         subject.touch_in(entry_station)
       end

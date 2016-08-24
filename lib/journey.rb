@@ -5,22 +5,20 @@ class Journey
 
   attr_reader :journey
 
-  def initialize
-    @journey = {}
+  def initialize(entry_station: nil, exit_station: nil)
+    @journey = {entry_station: entry_station, exit_station: exit_station}
   end
 
-  def start(station)
-    @journey[:entry_station] = station
+  def complete?
+    @journey[:entry_station] != nil and @journey[:exit_station] != nil
   end
 
   def finish(station)
     @journey[:exit_station] = station
   end
 
-# why is fare returning 6 when called explicitly after a full journey in irb?
-# will be an issue if want to check our last fare
   def fare
-    journey.length == 2 ? MIN_FARE : PENALTY_FARE
+    complete? ? MIN_FARE : PENALTY_FARE
   end
 
 end
