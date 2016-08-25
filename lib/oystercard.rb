@@ -7,15 +7,14 @@ class Oystercard
 
   DEFAULT_MAX = 90
 
-  def initialize(balance = 0, max_balance = DEFAULT_MAX)
+  def initialize(balance = 0)
     @balance = balance
-    @max_balance = max_balance
     @journeys = []
     @current_journey = nil
   end
 
   def top_up(amount)
-    fail "balance cannot exceed £#{@max_balance}" if amount > max_balance - balance
+    fail "balance cannot exceed £#{DEFAULT_MAX}" if amount > DEFAULT_MAX - balance
     @balance += amount
   end
 

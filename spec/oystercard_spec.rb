@@ -15,17 +15,6 @@ describe Oystercard do
     allow(current_journey).to receive(:fare) { 1 }
   end
 
-=begin
-  context 'when initialized' do
-    it 'has a balance of 0' do
-      expect(subject.balance).to eq(0)
-    end
-
-    it 'has an empty list of journeys' do
-      expect(subject.journeys).to be_empty
-    end
-=end
-
   describe '#top_up' do
     it 'increases balance by amount' do
       subject.top_up(10)
