@@ -3,16 +3,17 @@ require_relative 'fare_calc'
 
 class Oystercard
 
-  attr_reader :limit, :fare, :entry_station, :journeys
-  attr_accessor :current_journey, :balance
+  attr_reader :current_journey, :balance
 
   DEFAULT_LIMIT = 90
   DEFAULT_BALANCE = 0
   MINIMUM_FARE = 1
+  PENALTY_CHARGE = 6
 
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
     @current_journey = nil
+    @journey_log = []
   end
 
   def top_up(amount)
@@ -23,20 +24,29 @@ class Oystercard
 
   def touch_in(station)
     fail 'Insufficient funds' if balance < MINIMUM_FARE
-    fail 'must touch out first' if started?
+    no_touch_out if !@current_journey.nil?
     @current_journey = Journey.new(station)
   end
 
   def touch_out(station)
-    fail "must touch in first" if !started?
-    deduct(MINIMUM_FARE)
+    no_touch_in if @current_journey.nil?
     @current_journey.complete(station)
-    #@current_journey = nil
+    @journey_log << @current_journey
+    @current_journey = nil
   end
 
   private
 
-  attr_reader :balance_confirmation
+  def no_touch_in
+    @current_journey = Journey.new(nil)
+    deduct(PENALTY_CHARGE)
+  end
+
+  def no_touch_out
+    @current_journey.complete(nil)
+    deduct(PENALTY_CHARGE)
+    @journey_log << @current_journey
+  end
 
   def deduct(amount)
     @balance -= amount

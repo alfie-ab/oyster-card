@@ -11,8 +11,8 @@ class Journey
     @completed = false
   end
 
-  def start
-    deduct(PENALTY_CHARGE)
+  def fare
+    return MINIMUM_FARE if @journey[:entry].nil? || @journey[:exit].nil?
   end
 
   def complete(station)

@@ -49,32 +49,25 @@ describe Oystercard do
         expect { oystercard.touch_in(entry_station) }.to raise_error msg
       end
 
-      it "returns the entry station with string passed in" do
-        expect(oystercard.touch_in("bank")).to eq "bank"
-      end
-
       it "updates the current journey attribute when touch in" do
         oystercard.touch_in("station")
         expect(oystercard.current_journey).to_not eq nil
-      end
-
-      it 'does not allow touch in if no touch out' do
-        oystercard.touch_in("station1")
-        expect{oystercard.touch_in("station2")}.to raise_error "must touch out first"
       end
 
     end
 
     describe '#touch_out' do
 
-      it 'does not allow touch out if not touched in' do
-        expect{oystercard.touch_out("station")}.to raise_error "must touch in first"
+      it 'deducts the penalty fare on touch in when not touched out' do
+        oystercard.touch_out("station")
+        expect(oystercard.balance).to eq 4
       end
 
       before do
         oystercard.touch_in("station")
         oystercard.touch_out("station")
       end
+
       it 'will forget journey after touch out' do
         expect(oystercard.current_journey).to eq nil
       end

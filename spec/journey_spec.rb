@@ -2,6 +2,7 @@ require 'journey'
 
 describe Journey do
 
+
   subject {described_class.new("startstation")}
 
 
@@ -19,8 +20,5 @@ describe Journey do
     expect(subject.journey).to eq({entry: "startstation" , exit: "stationexit"})
   end
 
-  it 'deducts the penalty fare on touch in when not touch out' do
-
-  end
 
 end
