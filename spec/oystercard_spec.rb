@@ -9,28 +9,13 @@ describe Oystercard do
   describe '#initialize' do
     it 'instantiates with a balance of 0' do
       oystercard = Oystercard.new
-      expect(oystercard.balance).to eq described_class::DEFAULT_BALANCE
-    end
-
-    it 'has a default limit' do
-      expect(oystercard.limit).to eq described_class::DEFAULT_LIMIT
-    end
-
-    it 'sets a given limit' do
-      oystercard = Oystercard.new 100
-      expect(oystercard.limit).to eq 100
+      expect(oystercard.balance).to eq Oystercard::DEFAULT_BALANCE
     end
 
     it 'sets a given balance' do
-      oystercard = Oystercard.new 100, 50
+      oystercard = Oystercard.new(50)
       expect(oystercard.balance).to eq 50
     end
-
-    it 'raises an error when instantiated balance is larger than limit' do
-      msg = 'Balance cannot be larger than limit'
-      expect {Oystercard.new 50, 100}.to raise_error msg
-    end
-
 
   end
 
@@ -50,7 +35,7 @@ describe Oystercard do
       end
 
       it 'raises error if limit reached' do
-        oystercard.top_up(90)
+        oystercard.top_up(80)
         msg = 'Balance limit reached'
         expect {oystercard.top_up(1)}.to raise_error msg
       end
@@ -59,7 +44,7 @@ describe Oystercard do
     describe '#touch_in' do
 
       it 'will not touch in if insufficient funds' do
-        oystercard = Oystercard.new(90,0)
+        oystercard = Oystercard.new(0)
         msg = 'Insufficient funds'
         expect { oystercard.touch_in(entry_station) }.to raise_error msg
       end

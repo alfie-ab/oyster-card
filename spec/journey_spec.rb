@@ -14,17 +14,13 @@ describe Journey do
     expect(subject.completed).to be true
   end
 
-  it 'returns false if journey is incomplete' do
-    expect(subject.completed).to be false
-  end
-
   it 'stores a journey' do
     subject.complete("stationexit")
     expect(subject.journey).to eq({entry: "startstation" , exit: "stationexit"})
   end
 
-  it 'will remember the entry station' do
-    expect(subject.journey[:entry]).to eq "startstation"
+  it 'deducts the penalty fare on touch in when not touch out' do
+
   end
 
 end
